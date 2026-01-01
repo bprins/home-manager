@@ -70,6 +70,8 @@
     settings.show_program_path = true;
   };
 
+  programs.go.enable = true;
+
   programs.lf.enable = true;
 
   programs.zoxide.enable = true;
