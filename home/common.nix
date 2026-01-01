@@ -22,11 +22,11 @@
 
   programs.git = {
     enable = true;
-    userEmail = "bobby.prins@gmail.com";
-    userName = "Bobby Prins";
-    diff-so-fancy.enable = true;
-    lfs.enable = true;
-    extraConfig = {
+    settings = {
+      user = {
+        email = "bobby.prins@gmail.com";
+        name = "Bobby Prins";
+      };
       init = {
         defaultBranch = "main";
       };
@@ -38,6 +38,11 @@
         rebase = true;
       };
     };
+    lfs.enable = true;
+  };
+  programs.diff-so-fancy = {
+    enable = true;
+    enableGitIntegration = true;
   };
 
   programs.eza = {
