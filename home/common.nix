@@ -3,7 +3,15 @@
     packages = with pkgs; [
       ansible
       ansible-lint
+      lua-language-server
+      luajitPackages.luarocks
+      markdownlint-cli2
+      marksman
+      prettier
+      stylua
       tmux
+      tree-sitter
+      yaml-language-server
     ];
 
     username = "bprins";
@@ -44,6 +52,11 @@
     enable = true;
     enableGitIntegration = true;
   };
+
+  programs.neovim.enable = true;
+  programs.fd.enable = true;
+  programs.ripgrep.enable = true;
+  programs.lazygit.enable = true;
 
   programs.eza = {
     enable = true;
