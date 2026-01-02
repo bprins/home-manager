@@ -21,3 +21,9 @@ Linux:
 ```sh
 home-manager switch --flake .#bprins-linux
 ```
+
+Update `flake.lock`:
+
+```sh
+nix --option commit-lockfile-summary "chore: update flake.lock" flake update --commit-lock-file
+```
