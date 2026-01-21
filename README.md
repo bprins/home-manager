@@ -22,6 +22,8 @@ Linux:
 home-manager switch --flake .#bprins-linux
 ```
 
+When using a `~/.config/home-manager/local.nix` to maintain local overrides add `--impure` to the `home-manager switch` command.
+
 Update `flake.lock`:
 
 ```sh

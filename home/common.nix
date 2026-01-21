@@ -1,4 +1,10 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, ... }:
+let
+  localConfigPath = /Users/bprins/.config/home-manager/local.nix;
+in
+{
+  imports = lib.optional (builtins.pathExists localConfigPath) localConfigPath;
+
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "claude-code"
   ];
