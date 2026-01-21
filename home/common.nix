@@ -5,10 +5,6 @@ in
 {
   imports = lib.optional (builtins.pathExists localConfigPath) localConfigPath;
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "claude-code"
-  ];
-
   home = {
     packages = with pkgs; [
       ansible
@@ -67,8 +63,6 @@ in
   programs.fd.enable = true;
   programs.ripgrep.enable = true;
   programs.lazygit.enable = true;
-
-  programs.claude-code.enable = true;
 
   programs.eza = {
     enable = true;
