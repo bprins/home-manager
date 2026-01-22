@@ -100,6 +100,11 @@ in
 
   programs.zoxide.enable = true;
 
+  programs.ghostty = {
+    enable = true;
+    settings = import ./config/ghostty.nix;
+  };
+
   programs.starship = {
     enable = true;
     enableZshIntegration = true;

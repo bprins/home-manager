@@ -1,0 +1,4 @@
+{
+  theme = "Catppuccin Mocha";
+  font-size = 11;
+}
