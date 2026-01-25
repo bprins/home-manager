@@ -34,6 +34,8 @@ in
     autosuggestion.enable = true;
   };
 
+  programs.atuin.enable = true;
+
   programs.git = {
     enable = true;
     settings = {
