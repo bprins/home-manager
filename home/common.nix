@@ -17,6 +17,7 @@ in
       stylua
       tmux
       tree-sitter
+      uv
       yaml-language-server
     ];
 
