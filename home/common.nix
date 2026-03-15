@@ -36,6 +36,9 @@ in
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
+    initExtra = ''
+      export DOCKER_HOST=$(podman machine inspect --format 'unix://{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null)
+    '';
   };
 
   programs.atuin.enable = true;
