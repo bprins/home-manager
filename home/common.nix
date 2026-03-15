@@ -36,9 +36,25 @@ in
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
-    initExtra = ''
-      export DOCKER_HOST=$(podman machine inspect --format 'unix://{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null)
+    initContent = ''
+      export CONTAINER_CONNECTION=podman-machine-default-root
+      export DOCKER_HOST=$(podman system connection ls --format '{{if eq .Name "podman-machine-default-root"}}{{.URI}}{{end}}' 2>/dev/null)
+      export DOCKER_SOCK=/run/podman/podman.sock
     '';
+  };
+
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "127.0.0.1" = {
+        identityFile = "~/.local/share/containers/podman/machine/machine";
+      };
+      "*" = {
+        addKeysToAgent = "yes";
+        identityFile = "~/.ssh/id_ed25519";
+      };
+    };
   };
 
   programs.atuin.enable = true;
