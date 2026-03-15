@@ -9,6 +9,7 @@ in
     packages = with pkgs; [
       ansible
       ansible-lint
+      k3d
       lua-language-server
       luajitPackages.luarocks
       markdownlint-cli2
