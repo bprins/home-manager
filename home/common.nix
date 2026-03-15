@@ -14,6 +14,8 @@ in
       luajitPackages.luarocks
       markdownlint-cli2
       marksman
+      podman
+      podman-compose
       prettier
       stylua
       tmux
