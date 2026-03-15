@@ -18,7 +18,7 @@
       };
 
       bprins-darwin = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-darwin;
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
         modules = [ ./home/darwin.nix ];
       };
     };
