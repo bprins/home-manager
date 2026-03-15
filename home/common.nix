@@ -62,6 +62,12 @@ in
     enableGitIntegration = true;
   };
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   programs.neovim.enable = true;
   programs.fd.enable = true;
   programs.ripgrep.enable = true;
