@@ -90,7 +90,11 @@ in
     nix-direnv.enable = true;
   };
 
-  programs.neovim.enable = true;
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    sideloadInitLua = true;
+  };
   programs.fd.enable = true;
   programs.ripgrep.enable = true;
   programs.lazygit.enable = true;
