@@ -46,7 +46,7 @@ in
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
+    settings = {
       "127.0.0.1" = {
         identityFile = "~/.local/share/containers/podman/machine/machine";
       };
