@@ -19,7 +19,7 @@ home-manager switch --flake .#bprins-darwin
 Linux:
 
 ```sh
-home-manager switch --flake .#bprins-linux
+home-manager switch --flake .#bprins-linux-$(uname -m)
 ```
 
 When using a `~/.config/home-manager/local.nix` to maintain local overrides add `--impure` to the `home-manager switch` command.

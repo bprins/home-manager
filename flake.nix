@@ -10,17 +10,25 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }: {
-    homeConfigurations = {
-      bprins-linux = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [ ./home/linux.nix ];
+  outputs = { nixpkgs, home-manager, ... }:
+    let
+      inherit (nixpkgs) lib;
+
+      mkHome = system: modules: home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        inherit modules;
       };
 
-      bprins-darwin = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-        modules = [ ./home/darwin.nix ];
-      };
+      eachLinux = name: modules:
+        builtins.listToAttrs (map (system: {
+          name = "${name}-${lib.removeSuffix "-linux" system}";
+          value = mkHome system modules;
+        }) [ "x86_64-linux" "aarch64-linux" ]);
+    in {
+      homeConfigurations =
+        eachLinux "bprins-linux" [ ./home/linux.nix ]
+        // {
+          bprins-darwin = mkHome "aarch64-darwin" [ ./home/darwin.nix ];
+        };
     };
-  };
 }
