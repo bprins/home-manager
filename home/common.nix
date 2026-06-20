@@ -16,6 +16,7 @@ in
       marksman
       podman
       podman-compose
+      popeye
       prettier
       stylua
       tmux
