@@ -95,6 +95,8 @@ in
     enable = true;
     defaultEditor = true;
     sideloadInitLua = true;
+    withRuby = false;
+    withPython3 = false;
   };
   programs.fd.enable = true;
   programs.ripgrep.enable = true;
