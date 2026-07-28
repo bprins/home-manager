@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
   homeEnv = builtins.getEnv "HOME";
   localConfigPath = "${homeEnv}/.config/home-manager/local.nix";
@@ -32,6 +32,9 @@ in
       yaml-language-server
     ];
 
+    # eza resolves its config dir per platform and ignores XDG_CONFIG_HOME
+    sessionVariables.EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
+
     username = lib.mkDefault "bprins";
     homeDirectory = lib.mkOptionDefault "/home/bprins";
 
@@ -51,6 +54,10 @@ in
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
+    shellAliases = {
+      cat = "bat";
+      man = "batman";
+    };
     initContent = ''
       export CONTAINER_CONNECTION=podman-machine-default-root
       export DOCKER_HOST=$(podman system connection ls --format '{{if eq .Name "podman-machine-default-root"}}{{.URI}}{{end}}' 2>/dev/null)
@@ -133,6 +140,12 @@ in
       paging = "never";
       style = "plain";
     };
+    extraPackages = with pkgs.bat-extras; [
+      batdiff
+      batgrep
+      batman
+      batwatch
+    ];
   };
 
   programs.fzf = {
