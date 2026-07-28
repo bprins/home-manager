@@ -71,8 +71,8 @@ in
     enable = true;
     settings = {
       user = {
-        email = "bobby.prins@gmail.com";
-        name = "Bobby Prins";
+        email = lib.mkDefault "bobby.prins@gmail.com";
+        name = lib.mkDefault "Bobby Prins";
       };
       init = {
         defaultBranch = "main";
