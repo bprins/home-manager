@@ -40,6 +40,13 @@ in
 
   programs.home-manager.enable = true;
 
+  catppuccin = {
+    enable = true;
+    autoEnable = true;
+    flavor = "mocha";
+    accent = "mauve";
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -123,7 +130,6 @@ in
   programs.bat = {
     enable = true;
     config = {
-      theme = "Nord";
       paging = "never";
       style = "plain";
     };

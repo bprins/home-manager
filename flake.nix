@@ -8,15 +8,20 @@
         url = "github:nix-community/home-manager/master";
         inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    catppuccin = {
+        url = "github:catppuccin/nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, catppuccin, ... }:
     let
       inherit (nixpkgs) lib;
 
       mkHome = system: modules: home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
-        inherit modules;
+        modules = modules ++ [ catppuccin.homeModules.catppuccin ];
       };
 
       eachLinux = name: modules:
