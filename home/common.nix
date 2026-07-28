@@ -1,9 +1,16 @@
 { lib, pkgs, ... }:
 let
-  localConfigPath = /Users/bprins/.config/home-manager/local.nix;
+  homeEnv = builtins.getEnv "HOME";
+  localConfigPath = "${homeEnv}/.config/home-manager/local.nix";
+  # getEnv returns "" under pure evaluation, which would skip local.nix silently
+  pureEval = homeEnv == "";
 in
 {
-  imports = lib.optional (builtins.pathExists localConfigPath) localConfigPath;
+  imports = lib.warnIf pureEval
+    "local.nix overrides skipped: HOME is unset under pure evaluation, pass --impure to apply them"
+    (lib.optional
+      (!pureEval && builtins.pathExists localConfigPath)
+      (/. + localConfigPath));
 
   home = {
     packages = with pkgs; [
@@ -25,8 +32,8 @@ in
       yaml-language-server
     ];
 
-    username = "bprins";
-    homeDirectory = lib.mkDefault "/home/bprins";
+    username = lib.mkDefault "bprins";
+    homeDirectory = lib.mkOptionDefault "/home/bprins";
 
     stateVersion = "24.11";
   };

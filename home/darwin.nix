@@ -1,8 +1,8 @@
-{ ... }: {
+{ lib, ... }: {
   imports = [ ./common.nix ];
 
   home = {
-    homeDirectory = "/Users/bprins";
+    homeDirectory = lib.mkDefault "/Users/bprins";
   };
 
   programs.zsh.profileExtra = "eval $(/opt/homebrew/bin/brew shellenv)";
