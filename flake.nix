@@ -39,6 +39,7 @@
         ]
         // mkDarwin "bprins-macbookpro" [
           ./home/darwin.nix
+          { targets.darwin.linkApps.enable = false; }
         ];
     };
 }
