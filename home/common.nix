@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
 let
   homeEnv = builtins.getEnv "HOME";
   localConfigPath = "${homeEnv}/.config/home-manager/local.nix";
@@ -6,35 +6,31 @@ let
   pureEval = homeEnv == "";
 in
 {
-  imports = lib.warnIf pureEval
+  imports = [
+    ./modules/containers.nix
+    ./modules/dev.nix
+    ./modules/editor.nix
+    ./modules/git.nix
+    ./modules/shell.nix
+    ./modules/ssh.nix
+    ./modules/terminal.nix
+    ./modules/tools.nix
+  ]
+  ++ lib.warnIf pureEval
     "local.nix overrides skipped: HOME is unset under pure evaluation, pass --impure to apply them"
     (lib.optional
       (!pureEval && builtins.pathExists localConfigPath)
       (/. + localConfigPath));
 
+  # allowUnfreePredicate is a function, so it cannot merge across modules and has to
+  # live in one place. Allowing a package here does not install it; the profile that
+  # wants it still has to pull it in.
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "claude-code"
+    "obsidian"
+  ];
+
   home = {
-    packages = with pkgs; [
-      ansible
-      ansible-lint
-      k3d
-      lua-language-server
-      luajitPackages.luarocks
-      markdownlint-cli2
-      marksman
-      podman
-      podman-compose
-      popeye
-      prettier
-      stylua
-      tmux
-      tree-sitter
-      uv
-      yaml-language-server
-    ];
-
-    # eza resolves its config dir per platform and ignores XDG_CONFIG_HOME
-    sessionVariables.EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
-
     username = lib.mkDefault "bprins";
     homeDirectory = lib.mkOptionDefault "/home/bprins";
 
@@ -48,133 +44,5 @@ in
     autoEnable = true;
     flavor = "mocha";
     accent = "mauve";
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    shellAliases = {
-      cat = "bat";
-      man = "batman";
-    };
-    initContent = ''
-      export CONTAINER_CONNECTION=podman-machine-default-root
-      export DOCKER_HOST=$(podman system connection ls --format '{{if eq .Name "podman-machine-default-root"}}{{.URI}}{{end}}' 2>/dev/null)
-      export DOCKER_SOCK=/run/podman/podman.sock
-    '';
-  };
-
-  programs.ssh = {
-    enable = true;
-    enableDefaultConfig = false;
-    settings = {
-      "127.0.0.1" = {
-        identityFile = "~/.local/share/containers/podman/machine/machine";
-      };
-      "*" = {
-        addKeysToAgent = "yes";
-        identityFile = "~/.ssh/id_ed25519";
-      };
-    };
-  };
-
-  programs.atuin.enable = true;
-
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        email = lib.mkDefault "bobby.prins@gmail.com";
-        name = lib.mkDefault "Bobby Prins";
-      };
-      init = {
-        defaultBranch = "main";
-      };
-      merge = {
-        conflictStyle = "diff3";
-        tool = "meld";
-      };
-      pull = {
-        rebase = true;
-      };
-    };
-    lfs.enable = true;
-  };
-  programs.diff-so-fancy = {
-    enable = true;
-    enableGitIntegration = true;
-  };
-
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true;
-    nix-direnv.enable = true;
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    sideloadInitLua = true;
-    withRuby = false;
-    withPython3 = false;
-  };
-  programs.fd.enable = true;
-  programs.ripgrep.enable = true;
-  programs.lazygit.enable = true;
-
-  programs.eza = {
-    enable = true;
-    enableZshIntegration = true;
-    icons = "auto";
-    git = true;
-    extraOptions = [
-      "--group-directories-first"
-      "--color=auto"
-    ];
-  };
-
-  programs.bat = {
-    enable = true;
-    config = {
-      paging = "never";
-      style = "plain";
-    };
-    extraPackages = with pkgs.bat-extras; [
-      batdiff
-      batgrep
-      batman
-      batwatch
-    ];
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-    historyWidget = { 
-      command = "";
-    };
-  };
-
-  programs.htop = {
-    enable = true;
-    settings.show_program_path = true;
-  };
-
-  programs.go.enable = true;
-
-  programs.lf.enable = true;
-
-  programs.zoxide.enable = true;
-
-  programs.ghostty = {
-    enable = true;
-    settings = import ./config/ghostty.nix;
-  };
-
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;
-    settings = import ./config/starship.nix;
   };
 }

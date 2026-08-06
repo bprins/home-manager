@@ -36,15 +36,18 @@
         eachLinux "bprins-linux" [ ./home/linux.nix ]
         // mkDarwin "bprins-macbookair" [
           ./home/darwin.nix
-          ./home/darwin-extra.nix
+          ./home/profiles/ai-tools.nix
+          ./home/profiles/github.nix
+          ./home/profiles/notes.nix
         ]
         // mkDarwin "bprins-macmini" [
           ./home/darwin.nix
-          ./home/darwin-extra.nix
+          ./home/profiles/ai-tools.nix
+          ./home/profiles/github.nix
+          ./home/profiles/notes.nix
         ]
         // mkDarwin "bprins-macbookpro" [
           ./home/darwin.nix
-          { targets.darwin.linkApps.enable = false; }
         ];
     };
 }
