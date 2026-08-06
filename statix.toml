@@ -1,0 +1,4 @@
+# repeated_keys: this config deliberately uses flat `programs.foo.enable = true;`
+#   one-liners, sorted alphabetically, rather than nesting under `programs = { ... }`.
+# empty_pattern: `{ ... }:` is the idiomatic home-manager module signature; `_:` obscures it.
+disabled = [ "repeated_keys", "empty_pattern" ]

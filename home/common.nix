@@ -16,19 +16,20 @@ in
     ./modules/terminal.nix
     ./modules/tools.nix
   ]
-  ++ lib.warnIf pureEval
-    "local.nix overrides skipped: HOME is unset under pure evaluation, pass --impure to apply them"
-    (lib.optional
-      (!pureEval && builtins.pathExists localConfigPath)
-      (/. + localConfigPath));
+  ++
+    lib.warnIf pureEval
+      "local.nix overrides skipped: HOME is unset under pure evaluation, pass --impure to apply them"
+      (lib.optional (!pureEval && builtins.pathExists localConfigPath) (/. + localConfigPath));
 
   # allowUnfreePredicate is a function, so it cannot merge across modules and has to
   # live in one place. Allowing a package here does not install it; the profile that
   # wants it still has to pull it in.
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "claude-code"
-    "obsidian"
-  ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "claude-code"
+      "obsidian"
+    ];
 
   home = {
     username = lib.mkDefault "bprins";
