@@ -4,5 +4,5 @@
   ];
 
   # darwin-only: without it obsidian is only a store path
-  targets.darwin.linkApps.enable = true;
+  targets.darwin.copyApps.enable = true;
 }

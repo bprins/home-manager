@@ -5,8 +5,8 @@
     homeDirectory = lib.mkDefault "/Users/bprins";
   };
 
-  # opt in per machine via ./profiles/notes.nix
-  targets.darwin.linkApps.enable = lib.mkDefault false;
+  # Defaults back to true below stateVersion 25.11, we use copyApps
+  targets.darwin.linkApps.enable = false;
 
   programs.zsh.profileExtra = ''
     if [ -x /opt/homebrew/bin/brew ]; then
