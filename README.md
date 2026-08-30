@@ -32,3 +32,11 @@ Update `flake.lock`:
 ```sh
 nix --option commit-lockfile-summary "chore: update flake.lock" flake update --commit-lock-file
 ```
+
+Reclaim disk space by removing generations older than 30 days:
+
+```sh
+home-manager expire-generations "-30 days"
+nix profile wipe-history --older-than 30d --profile ~/.local/state/nix/profiles/profile
+nix store gc
+```
