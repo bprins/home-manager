@@ -8,6 +8,11 @@
     nix-direnv.enable = true;
   };
 
+  programs.mise = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
