@@ -1,9 +1,5 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [
-    ansible
-    ansible-lint
-    uv
-  ];
+  home.packages = with pkgs; [ uv ];
 
   programs.go.enable = true;
 }
