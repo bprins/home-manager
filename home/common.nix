@@ -36,6 +36,8 @@ in
     username = lib.mkDefault "bprins";
     homeDirectory = lib.mkOptionDefault "/home/bprins";
 
+    sessionPath = [ "$HOME/.local/bin" ];
+
     stateVersion = "24.11";
   };
 
