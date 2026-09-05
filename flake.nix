@@ -61,6 +61,7 @@
               ./home/profiles/ai-tools.nix
               ./home/profiles/github.nix
               ./home/profiles/notes.nix
+              ./home/profiles/media.nix
             ];
           };
           bprins-macmini = {
@@ -70,6 +71,7 @@
               ./home/profiles/ai-tools.nix
               ./home/profiles/github.nix
               ./home/profiles/notes.nix
+              ./home/profiles/media.nix
             ];
           };
           bprins-macbookpro = {
