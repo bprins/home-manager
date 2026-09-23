@@ -1,0 +1,39 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    "helpers:pinGitHubActionDigests",
+  ],
+  dependencyDashboard: true,
+  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  schedule: ["every weekend"],
+
+  // The nix manager is still beta, so it has to be opted into explicitly.
+  nix: {
+    enabled: true,
+  },
+
+  // Every input tracks a branch (nixos-unstable, master) rather than a tag, so
+  // there is no version for Renovate to bump. Refreshing the whole lock is the
+  // only meaningful update, which is what lockFileMaintenance does - it shells
+  // out to `nix flake update`. config:recommended leaves it off by default.
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["every weekend"],
+    commitMessageAction: "update",
+    commitMessageTopic: "flake.lock",
+  },
+
+  packageRules: [
+    {
+      description: "Keep workflow action pins current",
+      matchManagers: ["github-actions"],
+      semanticCommitType: "ci",
+      semanticCommitScope: "github-action",
+      commitMessageTopic: "action {{depName}}",
+      addLabels: ["renovate/github-action"],
+    },
+  ],
+}

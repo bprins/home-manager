@@ -1,0 +1,67 @@
+name: flake-diff
+
+on:
+  pull_request:
+    paths: [flake.lock]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: flake-diff-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diff:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    runs-on: macos-latest
+    env:
+      HOST: bprins-macbookair
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: cachix/install-nix-action@v31.11.1
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Build base
+        id: base
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/base" '${{ github.event.pull_request.base.sha }}'
+          echo "path=$(nix build "path:$RUNNER_TEMP/base#homeConfigurations.$HOST.activationPackage" \
+            --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
+
+      - name: Build PR
+        id: head
+        run: |
+          echo "path=$(nix build ".#homeConfigurations.$HOST.activationPackage" \
+            --no-link --print-out-paths)" >> "$GITHUB_OUTPUT"
+
+      - name: Diff closures
+        run: |
+          nix run --inputs-from . nixpkgs#nvd -- --color never diff \
+            '${{ steps.base.outputs.path }}' '${{ steps.head.outputs.path }}' > nvd.txt
+
+          {
+            echo "### Package changes on \`$HOST\`"
+            echo
+            echo '```'
+            # GitHub rejects comments over 65536 characters
+            head -c 60000 nvd.txt
+            echo '```'
+            if [ "$(wc -c < nvd.txt)" -gt 60000 ]; then
+              echo
+              echo "_Output truncated. Run \`nvd diff\` locally for the full list._"
+            fi
+          } > comment.md
+
+      - uses: marocchino/sticky-pull-request-comment@v3.0.5
+        with:
+          header: flake-diff
+          path: comment.md
