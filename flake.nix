@@ -9,10 +9,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin = {
-      url = "github:catppuccin/nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # No nixpkgs follows: builds against catppuccin's own pin are what
+    # catppuccin.cachix.org holds, so CI can fetch whiskers instead of compiling it.
+    catppuccin.url = "github:catppuccin/nix";
   };
 
   outputs =
