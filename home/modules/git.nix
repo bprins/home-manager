@@ -1,5 +1,26 @@
 { lib, ... }: {
-  programs.lazygit.enable = true;
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      git.commit.signOff = true;
+      customCommands = [
+        {
+          key = "O";
+          context = "commits";
+          description = "Sign off selected commit and everything above it";
+          prompts = [
+            {
+              type = "confirm";
+              title = "Sign off";
+              body = "Add Signed-off-by to {{.SelectedLocalCommit.Hash | printf \"%.7s\"}} and all newer commits?";
+            }
+          ];
+          command = "git rebase --autostash --signoff {{.SelectedLocalCommit.Hash}}~1";
+          loadingText = "Signing off...";
+        }
+      ];
+    };
+  };
 
   programs.diff-so-fancy = {
     enable = true;
