@@ -29,8 +29,12 @@ jobs:
         with:
           extra_nix_config: |
             experimental-features = nix-command flakes
-            extra-substituters = https://catppuccin.cachix.org
-            extra-trusted-public-keys = catppuccin.cachix.org-1:noG/4HkbhJb+lUAdKrph6LaozJvAeEEZj4N732IysmU=
+
+      - uses: cachix/cachix-action@v17
+        with:
+          name: bprins
+          extraPullNames: catppuccin
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build base
         id: base
