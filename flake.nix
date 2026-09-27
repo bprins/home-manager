@@ -38,7 +38,11 @@
         system: modules:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
-          modules = modules ++ [ catppuccin.homeModules.catppuccin ];
+          modules = [
+            ./home/common.nix
+            catppuccin.homeModules.catppuccin
+          ]
+          ++ modules;
         };
 
       # `system` is declared here rather than read back off the built config, so
@@ -49,7 +53,7 @@
             name = "bprins-linux-${lib.removeSuffix "-linux" system}";
             value = {
               inherit system;
-              modules = [ ./home/linux.nix ];
+              modules = [ ];
             };
           }) linuxSystems
         )

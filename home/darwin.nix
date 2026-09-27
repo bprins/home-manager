@@ -1,6 +1,4 @@
 { lib, pkgs, ... }: {
-  imports = [ ./common.nix ];
-
   home = {
     homeDirectory = lib.mkDefault "/Users/bprins";
 
