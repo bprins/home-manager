@@ -42,7 +42,28 @@ let
   tlsDir = "${config.xdg.stateHome}/openshell/tls";
 in
 {
-  programs.claude-code.enable = true;
+  programs.claude-code = {
+    enable = true;
+    # Read-only once managed: settings changed from inside Claude Code (/config,
+    # voice toggle) no longer persist and have to be made here instead.
+    settings = {
+      attribution.commit = "";
+      statusLine = {
+        type = "command";
+        command = "${./claude/statusline.sh}";
+      };
+      tui = "fullscreen";
+      voice = {
+        enabled = true;
+        mode = "hold";
+      };
+      voiceEnabled = true;
+      preferredNotifChannel = "ghostty";
+      agentPushNotifEnabled = true;
+    };
+    # Linked per file, so Claude Code's own skills/synced directory is left alone.
+    skills = ./claude/skills;
+  };
 
   home.packages = [ openshell ];
 
