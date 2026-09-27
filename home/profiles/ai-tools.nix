@@ -64,7 +64,6 @@ in
         enabled = true;
         mode = "hold";
       };
-      voiceEnabled = true;
       preferredNotifChannel = "ghostty";
       agentPushNotifEnabled = true;
     };
