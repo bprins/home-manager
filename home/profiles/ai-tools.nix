@@ -21,13 +21,11 @@ let
         inherit (finalAttrs) pname version src;
         hash = "sha256-zQo6Z62V4n1vQU59fD2Rx3y0nMQuD2Q6A9lzsRyaswI=";
       };
-      postPatch =
-        builtins.replaceStrings
-          [ ''members = ["crates/openshell-cli"]'' ]
-          [
-            ''members = ["crates/openshell-cli", "crates/openshell-gateway", "crates/openshell-driver-podman", "crates/openshell-prover-cli"]''
-          ]
-          old.postPatch;
+      postPatch = old.postPatch + ''
+        substituteInPlace Cargo.toml --replace-fail \
+          'members = ["crates/openshell-cli"]' \
+          'members = ["crates/openshell-cli", "crates/openshell-gateway", "crates/openshell-driver-podman", "crates/openshell-prover-cli"]'
+      '';
     }
   );
 
@@ -50,7 +48,16 @@ in
       attribution.commit = "";
       statusLine = {
         type = "command";
-        command = "${./claude/statusline.sh}";
+        command = lib.getExe (
+          pkgs.writeShellApplication {
+            name = "claude-statusline";
+            runtimeInputs = with pkgs; [
+              git
+              jq
+            ];
+            text = builtins.readFile ./claude/statusline.sh;
+          }
+        );
       };
       tui = "fullscreen";
       voice = {
