@@ -6,7 +6,6 @@
     ":semanticCommits",
     "helpers:pinGitHubActionDigests",
   ],
-  dependencyDashboard: true,
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   schedule: ["every weekend"],
 
@@ -21,6 +20,7 @@
   // out to `nix flake update`. config:recommended leaves it off by default.
   lockFileMaintenance: {
     enabled: true,
+    // Has its own default schedule that the top-level one does not override.
     schedule: ["every weekend"],
     commitMessageAction: "update",
     commitMessageTopic: "flake.lock",
