@@ -12,6 +12,22 @@ nix run home-manager/master -- switch --flake .#<host>
 
 After the first switch `home-manager` is on the `PATH`.
 
+### Binary caches
+
+Append to `/etc/nix/nix.custom.conf`:
+
+```
+extra-substituters = https://bprins.cachix.org https://catppuccin.cachix.org
+extra-trusted-public-keys = bprins.cachix.org-1:5aeG+RRkCdnpPoX1hibdT6XCaVeNCKGQ/+YXQdc2lyU= catppuccin.cachix.org-1:noG/4HkbhJb+lUAdKrph6LaozJvAeEEZj4N732IysmU=
+```
+
+Restart the daemon and confirm both caches are listed:
+
+```sh
+sudo launchctl kickstart -k system/systems.determinate.nix-daemon
+nix config show | grep substituters
+```
+
 ## Usage
 
 MacOS, per machine:
