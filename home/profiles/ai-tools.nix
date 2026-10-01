@@ -45,6 +45,7 @@ in
     # Read-only once managed: settings changed from inside Claude Code (/config,
     # voice toggle) no longer persist and have to be made here instead.
     settings = {
+      model = "claude-opus-5-5";
       attribution.commit = "";
       statusLine = {
         type = "command";
