@@ -77,6 +77,7 @@
               ./home/profiles/github.nix
               ./home/profiles/notes.nix
               ./home/profiles/media.nix
+              ./home/profiles/scrobbler.nix
             ];
           };
           bprins-macbookpro = {
