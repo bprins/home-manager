@@ -16,13 +16,7 @@ let
   '';
 in
 {
-  home = {
-    homeDirectory = lib.mkDefault "/Users/bprins";
-
-    packages = with pkgs; [
-      caffeine
-    ];
-  };
+  home.homeDirectory = lib.mkDefault "/Users/bprins";
 
   # Defaults back to true below stateVersion 25.11, we use copyApps
   targets.darwin.linkApps.enable = false;

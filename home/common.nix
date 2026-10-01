@@ -28,6 +28,7 @@ in
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [
+      "betterdisplay"
       "claude-code"
       "obsidian"
     ];
