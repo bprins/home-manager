@@ -8,6 +8,7 @@ in
 {
   imports = [
     ./modules/ansible.nix
+    ./modules/browser.nix
     ./modules/containers.nix
     ./modules/dev.nix
     ./modules/editor.nix

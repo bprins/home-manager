@@ -62,6 +62,7 @@
             modules = [
               ./home/darwin.nix
               ./home/profiles/ai-tools.nix
+              ./home/profiles/browser.nix
               ./home/profiles/displays.nix
               ./home/profiles/github.nix
               ./home/profiles/notes.nix
@@ -73,6 +74,7 @@
             modules = [
               ./home/darwin.nix
               ./home/profiles/ai-tools.nix
+              ./home/profiles/browser.nix
               ./home/profiles/displays.nix
               ./home/profiles/github.nix
               ./home/profiles/notes.nix
