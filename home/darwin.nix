@@ -30,9 +30,6 @@ in
     fi
   '';
 
-  # MacOS package is currently not available; only manage Ghostty configuration
-  programs.ghostty.package = null;
-
   launchd.agents.check-determinate-nix = {
     enable = true;
     config = {
