@@ -21,6 +21,8 @@ in
     # Policies instead of profiles: declaring a profile makes home-manager own profiles.ini
     programs.firefox = {
       enable = true;
+      # macOS 27 reserves Application Support/Firefox for Mozilla's signed build
+      configPath = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin "Library/Application Support/org.nixos.firefox";
 
       amoExtensions = {
         "{b86e4813-687a-43e6-ab65-0bde4ab75758}" = "localcdn-fork-of-decentraleyes";
