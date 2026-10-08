@@ -1,8 +1,78 @@
-_: {
-  programs.firefox.amoExtensions = {
-    "{446900e4-71c2-419f-a6a7-df9c091e268b}" = "bitwarden-password-manager";
-    "foxyproxy@eric.h.jung" = "foxyproxy-standard";
-    "jid1-xUfzOsOFlzSOXg@jetpack" = "reddit-enhancement-suite";
-    "sponsorBlocker@ajay.app" = "sponsorblock";
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  lock = Value: {
+    inherit Value;
+    Status = "locked";
+  };
+in
+{
+  options.programs.firefox.amoExtensions = lib.mkOption {
+    type = with lib.types; attrsOf str;
+    default = { };
+    description = "addons.mozilla.org slug per extension ID, installed through policies.";
+  };
+
+  config = {
+    # Policies instead of profiles: declaring a profile makes home-manager own profiles.ini
+    programs.firefox = {
+      enable = true;
+      # macOS 27 reserves Application Support/Firefox for Mozilla's signed build
+      configPath = "Library/Application Support/org.nixos.firefox";
+
+      amoExtensions = {
+        "{b86e4813-687a-43e6-ab65-0bde4ab75758}" = "localcdn-fork-of-decentraleyes";
+        "@unitedstatesenglishdictionary" = "us-english-dictionary";
+        "firefox@ghostery.com" = "ghostery";
+        "uBlock0@raymondhill.net" = "ublock-origin";
+        "{446900e4-71c2-419f-a6a7-df9c091e268b}" = "bitwarden-password-manager";
+        "foxyproxy@eric.h.jung" = "foxyproxy-standard";
+        "jid1-xUfzOsOFlzSOXg@jetpack" = "reddit-enhancement-suite";
+        "sponsorBlocker@ajay.app" = "sponsorblock";
+      };
+
+      policies = {
+        PasswordManagerEnabled = false;
+        SanitizeOnShutdown = {
+          FormData = true;
+          Locked = true;
+        };
+
+        ExtensionSettings = lib.mapAttrs (_: slug: {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/${slug}/latest.xpi";
+          installation_mode = "normal_installed";
+        }) config.programs.firefox.amoExtensions;
+
+        Preferences = lib.mapAttrs (_: lock) {
+          "browser.ai.control.default" = "blocked";
+          "browser.ml.chat.enabled" = false;
+          "browser.ml.linkPreview.enabled" = false;
+          "browser.tabs.groups.smart.enabled" = false;
+          "extensions.ml.enabled" = false;
+          "browser.translations.enable" = false;
+
+          "browser.startup.homepage" = "about:blank";
+          "browser.newtabpage.enabled" = false;
+          "browser.toolbars.bookmarks.visibility" = "always";
+          "browser.urlbar.showSearchSuggestionsFirst" = false;
+          "sidebar.verticalTabs" = true;
+          "intl.locale.requested" = "en-US,nl";
+
+          "network.dns.disablePrefetch" = true;
+          "network.prefetch-next" = false;
+          "network.http.speculative-parallel-limit" = 0;
+
+          "dom.disable_open_during_load" = false;
+        };
+      };
+    };
+
+    home.activation.setDefaultBrowser = lib.hm.dag.entryAfter [ "copyApps" ] ''
+      run --quiet ${lib.getExe pkgs.defaultbrowser} firefox
+    '';
   };
 }
