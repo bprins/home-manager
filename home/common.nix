@@ -12,6 +12,7 @@ in
     ./modules/dev.nix
     ./modules/editor.nix
     ./modules/git.nix
+    ./modules/repo.nix
     ./modules/shell.nix
     ./modules/ssh.nix
     ./modules/terminal.nix
