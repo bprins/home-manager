@@ -65,6 +65,17 @@ nvd diff ~/.local/state/home-manager/gcroots/current-home \
   "$(nix build .#homeConfigurations.bprins-macbookair.activationPackage --no-link --print-out-paths)"
 ```
 
+### Neovim plugins
+
+`~/.config/nvim` links into this checkout, so lazy.nvim writes `home/modules/nvim/lazy-lock.json` directly in the repo. Renovate doesn't track it.
+
+Update on one machine:
+
+1. Run `:Lazy sync` and check nothing breaks (`:Lazy restore` rolls back to the lockfile).
+2. Commit the lockfile on its own as `chore(neovim): update lazy-lock.json`.
+
+On the other machines, `git pull` and run `:Lazy restore`, since pulling alone doesn't move installed plugins to the locked commits.
+
 ## Housekeeping
 
 Reclaim disk space by removing generations older than 30 days:
