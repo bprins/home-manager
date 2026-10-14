@@ -72,7 +72,10 @@ in
     skills = ./claude/skills;
   };
 
-  home.packages = [ openshell ];
+  home.packages = [
+    openshell
+    pkgs.python3Packages.huggingface-hub
+  ];
 
   programs.ssh.settings."openshell-*.default" = {
     User = "sandbox";
