@@ -6,19 +6,13 @@ return {
   {
     "folke/sidekick.nvim",
     keys = {
-      -- Default CLI tool, so <leader>aa opens it directly instead of showing
-      -- "Select CLI tool:". sidekick has no config option for this; passing a
-      -- name narrows the filter to one tool, and its selector auto-picks when
-      -- exactly one matches.
-      --
-      -- The default follows the environment. On the host: claude. Inside an
-      -- OpenShell sandbox (OPENSHELL_SANDBOX=1) several CLIs are installed, so
-      -- pick by which provider is attached — its credential variable is present
-      -- as a placeholder: CLAUDE_CODE_OAUTH_TOKEN -> claude, otherwise pi.
+      -- Pick claude when it is installed, otherwise the picker.
+      -- Inside an OpenShell sandbox (OPENSHELL_SANDBOX=1) it chooses claude
+      -- if CLAUDE_CODE_OAUTH_TOKEN is set, otherwise pi.
       {
         "<leader>aa",
         function()
-          local tool = "claude"
+          local tool = vim.fn.executable("claude") == 1 and "claude" or nil
           if vim.env.OPENSHELL_SANDBOX == "1" then
             tool = vim.env.CLAUDE_CODE_OAUTH_TOKEN and "claude" or "pi"
           end
