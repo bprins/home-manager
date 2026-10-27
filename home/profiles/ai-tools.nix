@@ -46,6 +46,7 @@ in
     # voice toggle) no longer persist and have to be made here instead.
     settings = {
       model = "claude-opus-5-5";
+      cleanupPeriodDays = 365;
       attribution.commit = "";
       statusLine = {
         type = "command";
