@@ -21,6 +21,12 @@ let
         inherit (finalAttrs) pname version src;
         hash = "sha256-zQo6Z62V4n1vQU59fD2Rx3y0nMQuD2Q6A9lzsRyaswI=";
       };
+      # The gateway crates pull in aws-lc-sys and libsqlite3-sys, which
+      # cargoSetupHook now forces to link against system libraries.
+      buildInputs = old.buildInputs ++ [
+        pkgs.aws-lc
+        pkgs.sqlite
+      ];
       postPatch = old.postPatch + ''
         substituteInPlace Cargo.toml --replace-fail \
           'members = ["crates/openshell-cli"]' \
