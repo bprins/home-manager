@@ -2,7 +2,12 @@
   # eza resolves its config dir per platform and ignores XDG_CONFIG_HOME
   home.sessionVariables.EZA_CONFIG_DIR = "${config.xdg.configHome}/eza";
 
-  home.packages = with pkgs; [ nvd ];
+  home.packages = with pkgs; [
+    age
+    nvd
+    sops
+    yq-go
+  ];
 
   # aliases live next to the tool they point at; zsh merges them across modules
   programs.zsh.shellAliases = {
@@ -11,6 +16,7 @@
   };
 
   programs.fd.enable = true;
+  programs.jq.enable = true;
   programs.lf.enable = true;
   programs.ripgrep.enable = true;
 
